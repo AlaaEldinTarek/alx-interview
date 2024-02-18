@@ -1,7 +1,7 @@
 #!/usr/bin/node
 const request = require("request");
 const url =
-  "https://swapi-api.alx-tools.com/api/film/" + process.argv[2] + "/?format=json";
+  "https://swapi-api.alx-tools.com/api/films/" + process.argv[2] + "/?format=json";
 request.get(url, function (response, body) {
   const film = JSON.parse(body.body);
   // debugging
