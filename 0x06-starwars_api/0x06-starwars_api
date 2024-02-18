@@ -1,18 +1,37 @@
 #!/usr/bin/node
-// script that prints all characters of a Star Wars movie
+// Write a script that prints all characters of a Star Wars movie:
+// The first argument is the Movie ID - example: 3 = “Return of the Jedi”
+// Display one character name by line in the same order of the list “characters”
+// in the /films/ response
+// You must use the Star wars API
+// You must use the module request
 
+// Require request which includes put() function
 const request = require("request");
-if (process.argv.length === 3) {
-  const movieID = process.argv[2];
-  const url = "https://swapi-api.alx-tools.com/api/films/" + movieID;
-  request(url, function (err, response, body) {
-    if (err) {
-      console.log(err);
+// To request, we need to concatenate the api with the endpoint
+const url = "https://swapi-api.alx-tools.com/api/films/" + process.argv[2];
+
+request(url, (error, response, values) => {
+  if (error) {
+    console.log(error);
+  } else {
+    // Store the results
+    const results = JSON.parse(values).characters;
+    showResults(results, 0);
+  }
+});
+
+function showResults(results, index) {
+  if (index === results.length) {
+    return;
+  }
+  request(results[index], async (error, response, values) => {
+    if (error) {
+      console.log(error);
     } else {
-      const characterList = JSON.parse(body).characters;
-      for (let i = 0; i < characterList.length; i++) {
-        console.log(characterList[i]);
-      }
+      console.log(JSON.parse(values).name);
+      index += 1;
+      showResults(results, index);
     }
   });
 }
